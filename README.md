@@ -214,14 +214,4 @@ DB_PORT
 SECRET_KEY
 ```
 
----
 
-## Security Notes
-
-* Do not expose `SECRET_KEY` or database credentials in version control.
-* Remove `"details"` from error responses in production environments.
-* Use `.env` files with `.gitignore` to keep credentials out of source control.
-
----
-
-Let me know if you’d like a `Dockerfile`, `.env.example`, or CI/CD instructions added.
