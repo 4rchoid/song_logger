@@ -6,5 +6,5 @@ class SongsConfig(AppConfig):
     name = 'songs'
 
     def ready(self):
-        from startup import setup_graceful_shutdown
+        from .startup import setup_graceful_shutdown
         setup_graceful_shutdown()

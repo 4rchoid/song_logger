@@ -1,6 +1,5 @@
 import signal
 import sys
-import logging
 import time
 from django.db import connections
 from django.db.utils import OperationalError

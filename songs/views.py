@@ -4,7 +4,6 @@ from rest_framework import status
 from .models import Song
 from .serializers import SongSerializer
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.pagination import PageNumberPagination
 
 
 @api_view(['GET'])
@@ -14,22 +13,23 @@ def get_all_songs(request):
     if not songs.exists():
         return Response({"error": "No songs found."}, status=404)
 
-    paginator = PageNumberPagination()
 
-    # Cast page_size to int safely
-    page_size = request.query_params.get('page_size')
-    if page_size:
-        try:
-            paginator.page_size = int(page_size)
-        except ValueError:
-            return Response(
-                {"error": "Invalid page_size, must be an integer."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-    result_page = paginator.paginate_queryset(songs, request)
-    serializer = SongSerializer(result_page, many=True)
-
+    try:
+        page_size = int(request.query_params.get('page_size', 10))  # Page size
+        page = int(request.query_params.get('page', 1))  # Page number
+        if page_size <= 0 or page <= 0:
+            raise ValueError
+    except ValueError:
+        return Response(
+            {"error": "Invalid 'page' or 'page_size'. Must be positive integers."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    start_index = (page - 1) * page_size
+    end_index = start_index + page_size
+    paginated_songs = songs[start_index:end_index]
+    
+    serializer = SongSerializer(paginated_songs, many=True)
+    
     return Response(serializer.data)
 
     
