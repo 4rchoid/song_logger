@@ -12,16 +12,18 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import pymysql
 pymysql.install_as_MySQLdb()
 from pathlib import Path
-
+from dotenv import load_dotenv
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv()
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e$o)p5ek4*sxgiruy+rz54=cw74nx$e7(uyu4x&2!dpm&73kwl'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -51,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'song_logger.middleware.exception_handler.ServerErrorMiddleware'
 ]
 
 ROOT_URLCONF = 'song_logger.urls'
@@ -81,11 +84,11 @@ DATABASES = {
 
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'song_logger_db',       # <-- Your DB name
-        'USER': 'archit',
-        'PASSWORD': 'archit',
-        'HOST': 'localhost',            # or your DB host/IP
-        'PORT': '3306',
+        'NAME': os.getenv('DB_NAME'),       # <-- Your DB name
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),            # or your DB host/IP
+        'PORT': os.getenv('DB_PORT') ,
     }
 }
 
