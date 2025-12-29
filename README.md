@@ -1,7 +1,3 @@
-Absolutely — here's the cleaned-up `README.md` without any emojis or decorative elements:
-
----
-
 # song_logger
 
 A Django-based API for managing and rating songs, featuring robust error handling, pagination, and health checks.
